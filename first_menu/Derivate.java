@@ -13,6 +13,7 @@ public class Derivate {
 
     while (isExit == false) {
 
+      // TODO: Integates, Plot
       String[] options = {
           "Load terms",
           "Show function",
