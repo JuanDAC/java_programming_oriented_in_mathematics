@@ -1,3 +1,5 @@
+package Math.Derivate;
+
 import java.util.Scanner;
 
 public class Derivate {
@@ -87,6 +89,10 @@ public class Derivate {
     }
   }
 
+  public static int ABS(int value) {
+    return value < 0 ? -1 * value : value;
+  }
+
   public static void loadData() {
     int selection = 0;
     String[] options = {
@@ -103,7 +109,7 @@ public class Derivate {
     while (isExit == false) {
       clearCoefficient();
       selection = createMenu(options);
-      if (options[selection] != "Input exponent by exponent" && options[selection] != "Exit") {
+      if (options[selection] != "Enter exponent by exponent" && options[selection] != "Exit") {
         for (int i = 1; i <= selection; i++) {
           System.out.print("Type your coefficient for the exponent " + i + " number here: ");
           coefficient[i] = terminalConection.nextInt();
@@ -111,7 +117,7 @@ public class Derivate {
         System.out.print("Type the independent term here: ");
         coefficient[0] = terminalConection.nextInt();
       }
-      if (options[selection] == "Input exponent by exponent") {
+      if (options[selection] == "Enter exponent by exponent") {
         for (int i = 0; i < coefficient.length; i++) {
           System.out.print("Type your coefficient for the exponent " + i + " number here: ");
           coefficient[i] = terminalConection.nextInt();
@@ -135,20 +141,20 @@ public class Derivate {
       if (i == 1 && coefficient[i] != 0) {
         if (firstPrint)
           System.out.print((coefficient[i] < 0) ? "-" : "+");
-        System.out.print(" " + coefficient[i] + "x ");
+        System.out.print(" " + ABS(coefficient[i]) + "x ");
         firstPrint = true;
       }
       if (i != 1 && i != 0 && coefficient[i] != 0) {
         if (firstPrint)
           System.out.print((coefficient[i] < 0) ? "-" : "+");
-        System.out.print(" " + coefficient[i] + "x^" + i + " ");
+        System.out.print(" " + ABS(coefficient[i]) + "x^" + i + " ");
         firstPrint = true;
       }
     }
     if (coefficient[0] != 0) {
       if (firstPrint)
         System.out.print((coefficient[0] < 0) ? "-" : "+");
-      System.out.print(" " + coefficient[0]);
+      System.out.print(" " + ABS(coefficient[0]));
       firstPrint = true;
     }
     System.out.println("");

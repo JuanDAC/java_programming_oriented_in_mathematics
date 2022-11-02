@@ -1,6 +1,8 @@
+package Math.MinorAndAvarage;
+
 import java.util.Scanner;
 
-public class Main {
+public class MinorAndAvarage {
   public static void main(String[] args) {
     Scanner scannerConnection = new Scanner(System.in);
     String[] options = { "Load data", "Show data", "Addition and average", "Greater and minor", "Exit" };
