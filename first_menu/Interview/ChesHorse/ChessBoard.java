@@ -8,6 +8,19 @@ public class ChessBoard extends ArrayList<ArrayList<Number>> {
   int index = 0;
   static public final int restartMoves = 0;
 
+  public void move(Position move) {
+    horse.movements.add(move);
+    get(move.row).set(move.column, horse.count);
+    horse.count++;
+  }
+  
+  Position removeLast() {
+    Position last = horse.removeLast();
+    get(last.row).set(last.column, 0);
+    horse.count--;
+    return horse.last();
+  }
+
   int maxMovements() {
     return (size.height * size.width) - 1;
   }
@@ -31,7 +44,6 @@ public class ChessBoard extends ArrayList<ArrayList<Number>> {
         move.row < size.width &&
         move.column < size.height &&
         (int) get(move.row).get(move.column) == 0);
-
   }
 
   public boolean invalidMoves() {
@@ -61,10 +73,9 @@ public class ChessBoard extends ArrayList<ArrayList<Number>> {
 
   public void update() {
     reset();
-    int i = 1;
     for (Position movement : this.horse.movements) {
-      get(movement.row).set(movement.column, i);
-      i++;
+      get(movement.row).set(movement.column, horse.count);
+      horse.count++;
     }
   }
 

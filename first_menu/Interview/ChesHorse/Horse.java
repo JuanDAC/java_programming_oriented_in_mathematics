@@ -71,15 +71,23 @@ public class Horse {
        *************************/
   };
 
+  int count = 1;
+
   public ArrayList<Position> movements = new ArrayList<Position>();
 
-  public Position posibleMove(int index) {
-    return movements.get(movements.size() - 1).move(MOVEMENTS[index]);
+  public Position last() {
+    Position last = movements.get(count - 2);
+    return last;
   }
 
-  public Position removeLast () {
-    movements.remove(movements.size() - 1);
-    return movements.get(movements.size() - 1);
+  public Position posibleMove(int index) {
+    return movements.get(count - 2).move(MOVEMENTS[index]);
+  }
+
+  public Position removeLast() {
+    Position last = movements.get(count - 2);
+    movements.remove(count - 2);
+    return last;
   }
 
   public Horse() {
