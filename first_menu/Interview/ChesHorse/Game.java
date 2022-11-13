@@ -24,15 +24,16 @@ public class Game {
     chessBoard.push(horse, position);
     int index = 0;
 
-    while (horse.movements.size() < 50) {
+    while (horse.number() < 45) {
       chessBoard.startMoves(index);
       position = chessBoard.nextMove();
       if (chessBoard.invalidMoves()) {
-        index = chessBoard.removeLast().movement;
+        chessBoard.removeLast();
+        index = horse.last().movement + 1;
       }
       if (!chessBoard.invalidMoves()) {
         index = ChessBoard.restartMoves;
-        chessBoard.move(position);
+        chessBoard.push(position);
       }
     }
     chessBoard.show();

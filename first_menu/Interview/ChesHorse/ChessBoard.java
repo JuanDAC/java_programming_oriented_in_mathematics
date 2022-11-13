@@ -8,17 +8,9 @@ public class ChessBoard extends ArrayList<ArrayList<Number>> {
   int index = 0;
   static public final int restartMoves = 0;
 
-  public void move(Position move) {
-    horse.movements.add(move);
-    get(move.row).set(move.column, horse.count);
-    horse.count++;
-  }
-  
-  Position removeLast() {
-    Position last = horse.removeLast();
-    get(last.row).set(last.column, 0);
-    horse.count--;
-    return horse.last();
+  public void removeLast() {
+    Position removed = horse.removeLast();
+    get(removed.row).set(removed.column, 0);
   }
 
   int maxMovements() {
@@ -66,17 +58,14 @@ public class ChessBoard extends ArrayList<ArrayList<Number>> {
   }
 
   public void push(Horse horse, Position initial) {
-    horse.movements.add(initial);
     this.horse = horse;
-    update();
+    horse.add(initial);
+    get(initial.row).set(initial.column, horse.number());
   }
 
-  public void update() {
-    reset();
-    for (Position movement : this.horse.movements) {
-      get(movement.row).set(movement.column, horse.count);
-      horse.count++;
-    }
+  public void push(Position position) {
+    horse.add(position);
+    get(position.row).set(position.column, horse.number());
   }
 
   private String tile(int value, int position, int height, int floor) {

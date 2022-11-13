@@ -9,6 +9,12 @@ public class Position {
     return new Position(operation.row + row, operation.column + column, operation.movement);
   }
 
+  Position(Position position) {
+    this.column = position.column;
+    this.row = position.row;
+    this.movement = position.movement;
+  }
+
   Position(int[] both) {
     if (both.length == 2) {
       this.row = both[0];
