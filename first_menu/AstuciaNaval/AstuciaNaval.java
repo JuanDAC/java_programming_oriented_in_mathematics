@@ -35,6 +35,22 @@ public class AstuciaNaval {
     menuPrincipal();
   }
 
+  static boolean gano() {
+    int totalAciertos = 0, totalCeldasBarco = 0;
+
+    for (int x = 0; x < tablero.length; x++) {
+      for (int y = 0; y < tablero.length; y++) {
+        totalAciertos += tablero[x][y];
+      }
+    }
+
+    for (int i = 0; i < barcos.length; i++) {
+      totalCeldasBarco = barcos[i][LOGITUD];
+    }
+
+    return (totalCeldasBarco == totalAciertos);
+  }
+
   /**
    * Reiniciar el juego
    * 
@@ -50,6 +66,37 @@ public class AstuciaNaval {
     barcos = leerPropiedadesDeBarcos(barcos);
   }
 
+  static void atacarBarco() {
+    int[] coordenadas;
+    int[][] tableroConBarcos;
+
+    tableroConBarcos = ubicarBarcos();
+
+    do {
+      System.out.println("Ingresar posición mapa:");
+      coordenadas = leerCoordenadas();
+    } while (coorddenadasFueraDeLimites(coordenadas));
+
+    puntaje[MOVIMIENTOS] += 1;
+
+    if (tableroConBarcos[coordenadas[Y]][coordenadas[X]] == 1) {
+      tablero[coordenadas[Y]][coordenadas[X]] = 1;
+      System.out.println("Barco atacado");
+      mostrarTablero(tablero);
+    }
+
+    if (tableroConBarcos[coordenadas[Y]][coordenadas[X]] == 0) {
+      System.out.println("Barco NO atacado");
+      puntaje[FALLOS] += 0;
+    }
+
+  }
+
+  /**
+   * Colocar los valores iniciales en los datos de los barcos
+   * 
+   * @return
+   */
   static int[][] limpiarBarcos() {
     for (int i = 0; i < barcos.length; i++) {
       barcos[i][X] = -1;
@@ -59,6 +106,10 @@ public class AstuciaNaval {
     return barcos;
   }
 
+  /**
+   * 
+   * @return
+   */
   static int[] limpiarPuntaje() {
     puntaje[MOVIMIENTOS] = 0;
     puntaje[FALLOS] = 0;
@@ -96,6 +147,86 @@ public class AstuciaNaval {
     System.out.println("");
   }
 
+  static int[] buscarBarco(int[] coordenadas) {
+    int[] barco = { -1, -1, -1, -1 };
+    for (int i = 0; i < barcos.length; i++) {
+      if (barcos[i][X] == coordenadas[X] && barcos[i][Y] == coordenadas[Y]) {
+        return barcos[i];
+      }
+    }
+
+    return barco;
+  }
+
+  static int[] copiaBarco(int[] barco) {
+    int[] nuevoBarco = new int[4];
+
+    for (int i = 0; i < barco.length; i++) {
+      nuevoBarco[i] = barco[i];
+    }
+
+    return nuevoBarco;
+  }
+
+  static void cambiarBarco() {
+    int[] prevCoordenadas, newCoordenadas, barco, oldBarco;
+    int orientacion;
+    int[][] tableroConBarcos;
+    String[] opcionesDeOrientacion = { "Vertical", "Horizontal" };
+
+    if (puntaje[MOVIMIENTOS] != 0) {
+      System.out.println("Lo sentimos, pero el barco no se puede mover, la partida ya empezo.");
+      return;
+    }
+
+    do {
+      tableroConBarcos = ubicarBarcos();
+      mostrarTablero(tableroConBarcos);
+      System.out.println("Ingresar posición inicial del barco a mover:");
+      prevCoordenadas = leerCoordenadas();
+      if (coorddenadasFueraDeLimites(prevCoordenadas)) {
+        System.out.println("Error: Barco fuera de los limites, intenta de nuevo.");
+        continue;
+      }
+
+      barco = buscarBarco(prevCoordenadas);
+      oldBarco = copiaBarco(barco);
+      if (barco[ORIENTACION] == -1) {
+        System.out.println("Error: barco no encontrado.");
+        continue;
+      }
+
+      System.out.println("Ingresar nueva posición inicial para el barco:");
+      newCoordenadas = leerCoordenadas();
+      if (coorddenadasFueraDeLimites(newCoordenadas)) {
+        System.out.println("Lo sentimos, pero el barco no se puede mover a la ubicación seleccionada.");
+        continue;
+      }
+
+      barco[X] = newCoordenadas[X];
+      barco[Y] = newCoordenadas[Y];
+
+      System.out.println("Seleccione orientación");
+      orientacion = crearMenu(opcionesDeOrientacion);
+      barco[ORIENTACION] = orientacion;
+
+      tableroConBarcos = ubicarBarcos();
+      if (barcoSobreBarco(tableroConBarcos)) {
+        barco[X] = oldBarco[X];
+        barco[Y] = oldBarco[Y];
+        barco[ORIENTACION] = oldBarco[ORIENTACION];
+        System.out.println("Lo sentimos, pero el barco no se puede mover a la ubicación seleccionada.");
+        continue;
+      }
+
+      System.out.println("Nuevo tablero");
+      mostrarTablero(tableroConBarcos);
+
+      break;
+    } while (true);
+
+  }
+
   static void menuPrincipal() {
     String[] opcionesPrincipales = {
         "Reiniciar juego",
@@ -110,7 +241,18 @@ public class AstuciaNaval {
       seleccion = crearMenu(opcionesPrincipales);
       System.out.println("Opción " + (seleccion + 1) + ": " + opcionesPrincipales[seleccion]);
       seccion(opcionesPrincipales[seleccion]);
+      if (gano()) {
+        seleccion = 4;
+        System.out.println("Ya se han atacado todos los barcos.");
+        System.out.println("Cantidad total de movimientos: " + puntaje[MOVIMIENTOS] + ".");
+        System.out.println("Fallos " + puntaje[FALLOS] + ".");
+      }
+      if (puntaje[FALLOS] >= 20) {
+        seleccion = 4;
+        System.out.println("Lo sentimos, excediste los intentos.");
+      }
     } while (opcionesPrincipales[seleccion] != "Salir");
+
   }
 
   static boolean barcoSobreBarco(int[][] tableroIpotetico) {
@@ -121,6 +263,7 @@ public class AstuciaNaval {
         }
       }
     }
+
     return false;
   }
 
@@ -132,15 +275,17 @@ public class AstuciaNaval {
         reiniciarJuego("reiniciado");
         break;
       case "Atacar barco":
+        atacarBarco();
         break;
       case "Cambiar barco":
+        cambiarBarco();
         break;
       case "Ver tablero original":
         tableroConBarcos = ubicarBarcos();
         mostrarTablero(tableroConBarcos);
         break;
       case "Salir":
-        System.out.println("Gracias por participar en el juego de Astucia Naval.");
+        System.out.println("G1racias por participar en el juego de Astucia Naval.");
         break;
       default:
         break;
@@ -194,6 +339,13 @@ public class AstuciaNaval {
     return posiciones;
   }
 
+  static boolean coorddenadasFueraDeLimites(int[] coordenadas) {
+    return (coordenadas[X] < 0
+        || coordenadas[Y] < 0
+        || coordenadas[X] >= tablero[0].length
+        || coordenadas[Y] >= tablero.length);
+  }
+
   /**
    * este metodo ubica los barco dentro del tablero.
    * 
@@ -217,10 +369,7 @@ public class AstuciaNaval {
         barcos[i][X] = coordenadas[X];
         barcos[i][Y] = coordenadas[Y];
 
-        if (barcos[i][X] < 0
-            || barcos[i][Y] < 0
-            || barcos[i][X] >= tablero[0].length
-            || barcos[i][Y] >= tablero.length) {
+        if (coorddenadasFueraDeLimites(coordenadas)) {
           System.out.println("Error: Barco fuera de los limites, intenta de nuevo.");
           continue;
         }
@@ -237,8 +386,6 @@ public class AstuciaNaval {
         }
 
         tableroIpotetico = ubicarBarcos();
-        mostrarTablero(tableroIpotetico);
-
         if (barcoSobreBarco(tableroIpotetico)) {
           System.out.println("Error: Barco sobre barco, intenta de nuevo.");
           continue;
