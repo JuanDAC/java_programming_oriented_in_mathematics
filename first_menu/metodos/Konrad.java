@@ -1,7 +1,8 @@
+package metodos;
 
 import java.util.Scanner;
 
-public class SerieKonrad {
+public class Konrad {
 
   public static void main(String[] args) {
     int x = 0;
@@ -9,17 +10,20 @@ public class SerieKonrad {
     Scanner sc = new Scanner(System.in);
     System.out.println("Ingrese un numero para x ");
     x = sc.nextInt();
-    serieDeKonrand = Konrad(x);
+    serieDeKonrand = konrad(x);
     System.out.println("El valor calculado por la serie de konrad es " + serieDeKonrand);
 
   }
 
-  static float Konrad(float x) {
-    float sumatoria = 0;
-    for (int n = 3; n <= 8; n++) {
-      sumatoria = (potencia(2, n) * factorial(n - 2)) / potencia(x, n);
-    }
-    return sumatoria;
+  static float konrad(float x, int n) {
+    if (n > 8)
+      return 0;
+
+    return (potencia(2, n) * factorial(n - 2)) / potencia(x, n) + konrad(x, n + 1);
+  }
+
+  static float konrad(float x) {
+    return konrad(x, 3);
   }
 
   static float potencia(float b, int e) {
