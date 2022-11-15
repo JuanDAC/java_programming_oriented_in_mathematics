@@ -391,6 +391,7 @@ public class AstuciaNaval {
           continue;
         }
 
+        mostrarTablero(tableroIpotetico);
         break;
       } while (true);
     }
