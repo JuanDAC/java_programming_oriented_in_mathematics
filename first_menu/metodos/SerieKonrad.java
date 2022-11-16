@@ -4,38 +4,36 @@ import java.util.Scanner;
 public class SerieKonrad {
 
   public static void main(String[] args) {
-    int x = 0;
-    float serieDeKonrand = 0;
     Scanner sc = new Scanner(System.in);
-    System.out.println("Ingrese un numero para x ");
-    x = sc.nextInt();
-    serieDeKonrand = Konrad(x);
-    System.out.println("El valor calculado por la serie de konrad es " + serieDeKonrand);
-
+    System.out.print("Numero a evaluar ");
+    int evaluar = sc.nextInt();
+    System.out.println(Konrad(evaluar));
   }
 
-  static float Konrad(float x) {
-    float sumatoria = 0;
-    for (int n = 3; n <= 8; n++) {
-      sumatoria = sumatoria + (potencia(2, n) * factorial(n - 2)) / potencia(x, n);
+  static float Konrad(float entrada) {
+    float konrad = 0;
+    
+    for (int i = 3; i <= 8; i++) {
+      konrad += (pot(2, i) * factorial(i - 2)) / pot(entrada, i);
     }
-    return sumatoria;
+
+    return konrad;
   }
 
-  static float potencia(float b, int e) {
-    float res = 1;
+  static float pot(float valor, int e) {
+    float resultado = 1;
     for (int i = 1; i <= e; i++) {
-      res = res * b;
+      resultado = resultado * valor;
     }
-    return res;
+    return resultado;
   }
 
   static int factorial(int a) {
-    int res = 1;
+    int resultado = 1;
     for (int i = 1; i <= a; i++) {
-      res = res * i;
+      resultado = resultado * i;
     }
-    return res;
+    return resultado;
   }
 
 }
