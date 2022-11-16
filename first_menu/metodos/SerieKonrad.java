@@ -1,11 +1,10 @@
 
 import java.util.Scanner;
 
-public class SerieKonrad {
+public class Parcial {
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    System.out.print("Numero a evaluar ");
     int evaluar = sc.nextInt();
     System.out.println(Konrad(evaluar));
   }
