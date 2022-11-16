@@ -1,3 +1,4 @@
+package metodos;
 
 import java.util.Scanner;
 
@@ -17,7 +18,7 @@ public class SerieKonrad {
   static float Konrad(float x) {
     float sumatoria = 0;
     for (int n = 3; n <= 8; n++) {
-      sumatoria = (potencia(2, n) * factorial(n - 2)) / potencia(x, n);
+      sumatoria = sumatoria + (potencia(2, n) * factorial(n - 2)) / potencia(x, n);
     }
     return sumatoria;
   }
