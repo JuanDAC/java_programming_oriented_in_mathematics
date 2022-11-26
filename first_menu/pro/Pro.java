@@ -44,7 +44,7 @@ public class Pro {
                     break;
                 case 3:
                     System.out.println("Usted ha seleccionado la opción número 3.");
-                    System.out.println("El número a adivinar es ");
+                    System.out.println("El número a adivinar es " + matriz[selecion[0]][selecion[1]] + "\n");
                     break;
                 case 4:
                     System.out.println("Usted ha seleccionado la opción número 4.");
