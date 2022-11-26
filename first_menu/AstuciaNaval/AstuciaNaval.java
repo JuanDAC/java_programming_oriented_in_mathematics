@@ -10,11 +10,17 @@ public class AstuciaNaval {
   static int X = 0, Y = 1, ORIENTACION = 2, LOGITUD = 3;
   static int VERTICAL = 0, HORIZONTAL = 1;
   static int MOVIMIENTOS = 0, FALLOS = 1;
-  static int[] puntaje = { 0, 0 };
-  /**
-   * Variables
-   */
   static Scanner sc = new Scanner(System.in);
+  /**
+   * Estructuras de datos
+   */
+
+  /*
+   * M = MOVIMIENTOS
+   * F = FALLOS
+   * { M, F }
+   */
+  static int[] puntaje = { 0, 0 };
   static int[][] tablero = new int[6][6];
   /*
    * X = ubicacion en x
@@ -75,7 +81,7 @@ public class AstuciaNaval {
     do {
       System.out.println("Ingresar posición mapa:");
       coordenadas = leerCoordenadas();
-    } while (coorddenadasFueraDeLimites(coordenadas));
+    } while (coordenadasFueraDeLimites(coordenadas));
 
     puntaje[MOVIMIENTOS] += 1;
 
@@ -87,9 +93,8 @@ public class AstuciaNaval {
 
     if (tableroConBarcos[coordenadas[Y]][coordenadas[X]] == 0) {
       System.out.println("Barco NO atacado");
-      puntaje[FALLOS] += 0;
+      puntaje[FALLOS] += 1;
     }
-
   }
 
   /**
@@ -184,7 +189,7 @@ public class AstuciaNaval {
       mostrarTablero(tableroConBarcos);
       System.out.println("Ingresar posición inicial del barco a mover:");
       prevCoordenadas = leerCoordenadas();
-      if (coorddenadasFueraDeLimites(prevCoordenadas)) {
+      if (coordenadasFueraDeLimites(prevCoordenadas)) {
         System.out.println("Error: Barco fuera de los limites, intenta de nuevo.");
         continue;
       }
@@ -198,7 +203,7 @@ public class AstuciaNaval {
 
       System.out.println("Ingresar nueva posición inicial para el barco:");
       newCoordenadas = leerCoordenadas();
-      if (coorddenadasFueraDeLimites(newCoordenadas)) {
+      if (coordenadasFueraDeLimites(newCoordenadas)) {
         System.out.println("Lo sentimos, pero el barco no se puede mover a la ubicación seleccionada.");
         continue;
       }
@@ -339,7 +344,7 @@ public class AstuciaNaval {
     return posiciones;
   }
 
-  static boolean coorddenadasFueraDeLimites(int[] coordenadas) {
+  static boolean coordenadasFueraDeLimites(int[] coordenadas) {
     return (coordenadas[X] < 0
         || coordenadas[Y] < 0
         || coordenadas[X] >= tablero[0].length
@@ -362,14 +367,14 @@ public class AstuciaNaval {
     int[][] tableroIpotetico = new int[6][6];
 
     for (int i = 0; i < barcos.length; i++) {
-      do {
+      while (true) {
         System.out.println("Ingresar posición inicial del barco de longitud " + barcos[i][LOGITUD] + ":");
         int[] coordenadas = leerCoordenadas();
 
         barcos[i][X] = coordenadas[X];
         barcos[i][Y] = coordenadas[Y];
 
-        if (coorddenadasFueraDeLimites(coordenadas)) {
+        if (coordenadasFueraDeLimites(coordenadas)) {
           System.out.println("Error: Barco fuera de los limites, intenta de nuevo.");
           continue;
         }
@@ -393,7 +398,7 @@ public class AstuciaNaval {
 
         mostrarTablero(tableroIpotetico);
         break;
-      } while (true);
+      }
     }
     return barcos;
   }

@@ -2,7 +2,7 @@ package metodos;
 
 import java.util.Scanner;
 
-public class Konrad {
+public class Konra {
 
   public static void main(String[] args) {
     final Scanner conectionTerminal = new Scanner(System.in);
@@ -34,3 +34,4 @@ public class Konrad {
   }
 
 }
+
